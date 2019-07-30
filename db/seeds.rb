@@ -19,18 +19,20 @@ puts "tables reset"
 
 puts "seeding data"
 
-user1 = User.create(name: "meghann")
-user2 = User.create(name: "hyo")
-user3 = User.create(name: "blah")
-user4 = User.create(name: "fart")
+User.create(name: "meghann")
+User.create(name: "hyo")
+User.create(name: "blah")
+User.create(name: "fart")
 
-wardrobe1 = Wardrobe.create(user_id: 1, name: "meghann's wardrobe")
-wardrobe2 = Wardrobe.create(user_id: 2, name: "hyo's wardrobe")
-wardrobe3 = Wardrobe.create(user_id: 3, name: "blah's wardrobe")
-wardrobe4 = Wardrobe.create(user_id: 3, name: "blah's second wardrobe")
-wardrobe5 = Wardrobe.create(user_id: 4, name: "fart's wardrobe")
-wardrobe6 = Wardrobe.create(user_id: 4, name: "fart's second wardrobe")
+Wardrobe.create(user_id: 1, name: "meghann's wardrobe")
+Wardrobe.create(user_id: 2, name: "hyo's wardrobe")
+Wardrobe.create(user_id: 3, name: "blah's wardrobe")
+Wardrobe.create(user_id: 3, name: "blah's second wardrobe")
+Wardrobe.create(user_id: 4, name: "fart's wardrobe")
+Wardrobe.create(user_id: 4, name: "fart's second wardrobe")
 
-item1 = Item.create(kind: "top", color: "red", season: "winter", image_url: "", date: 2015, location: "new york", size: "XXXL", user_id: 1, wardrobe_id: 1)
+Item.create(kind: "top", color: "red", season: "winter", image_url: "", date: 2015, location: "new york", size: "XXXL", user_id: 1, wardrobe_id: 1)
+Item.create(kind: "top", color: "red", season: "winter", image_url: "", date: 2005, location: "new york", size: "XXXL", user_id: 2, wardrobe_id: 1)
+Item.create(kind: "bottom", color: "black", season: "summer", image_url: "", date: 2019, location: "new york", size: "XXXL", user_id: 3, wardrobe_id: 2)
 
 puts "end seed"
