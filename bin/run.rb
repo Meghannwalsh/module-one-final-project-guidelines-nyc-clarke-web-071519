@@ -574,6 +574,7 @@ def run
         handler.option('your wardrobe')  { |selection| selection }
         handler.option('everyones wardrobe')  { |selection| selection }
         handler.option('make new wardrobe')  { |selection| selection }
+        handler.option('clean out wardrobe')  { |selection| selection }
     end 
  
     
@@ -605,8 +606,29 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
 
         make_new_wardrobe(user_instance.id, new_wardrobe_name)
 
-    end 
+    elsif wardrobe_choice == "clean out wardrobe"
+        clean_wardrobe =  CLI::UI::Prompt.ask("Choose which wardrobe you would like to clean out") do |handler|
+            user_instance.new_wardrobes.each do |ward|
+            handler.option(ward.name)  { |selection| selection }
+            end 
+        end 
 
+        
+        selected_wardrobe = user_instance.new_wardrobes.find do |wardrobe|
+                    wardrobe.name == clean_wardrobe
+                    end 
+
+        puts "enter the year you want to clean out before that year purchased"
+        answer = gets.chomp.to_i
+       
+
+        selected_wardrobe.items.each do |item|
+            year = item.date
+            if year < answer 
+                item.destroy 
+            end 
+        end 
+    end 
 
     #get to screen for choosing self or everyone 
    
