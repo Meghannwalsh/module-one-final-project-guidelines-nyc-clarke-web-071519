@@ -7,12 +7,12 @@ require_relative '../app/models/wardrobe.rb'
 
 
 
-def kinds_for_everyone(type)
+def kinds_for_everyone(type, user)
     allItems = Item.all.where(kind: type)
     if allItems.empty?
         puts "sorry, there are no items here"
-        run
-
+        
+        back_to_main_page(user)
     else
         selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
             allItems.each do |op|
@@ -27,7 +27,7 @@ def kinds_for_everyone(type)
         end 
 
 
-        CLI::UI::Frame.open('Open') { puts 'hi' }
+        framing(output)
                 
       
 
@@ -35,11 +35,11 @@ def kinds_for_everyone(type)
     end 
 end 
 
-def colors_for_everyone(col)
+def colors_for_everyone(col, user)
     allItems = Item.all.where(color: col)
     if allItems.empty?
         puts "sorry, there are no items here"
-        run
+        back_to_main_page(user)
     else
         selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
             allItems.each do |op|
@@ -53,21 +53,18 @@ def colors_for_everyone(col)
             item.kind == selection
         end 
 
-        puts output.kind
-        puts output.image_url
-        puts output.location
-        puts output.size
+        framing(output)
 
         editing_method(output)
     end
 end 
     
 
-def seasons_for_everyone(seas)
+def seasons_for_everyone(seas, user)
    allItmes = Item.all.where(season: seas)
    if allItems.empty?
         puts "sorry, there are no items here"
-        run
+        back_to_main_page(user)
 
     else
     selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
@@ -81,20 +78,17 @@ def seasons_for_everyone(seas)
             item.kind == selection
         end 
 
-        puts output.kind
-        puts output.image_url
-        puts output.location
-        puts output.size
+       framing(output)
 
         editing_method(output)
     end
 end 
 
-def date_for_everyone(date)
+def date_for_everyone(date, user)
     allItems = Item.all.where(date)
     if allItems.empty?
         puts "sorry, there are no items here"
-        run
+        back_to_main_page(user)
 
     else
         selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
@@ -109,10 +103,7 @@ def date_for_everyone(date)
             item.kind == selection
         end 
 
-        puts output.kind
-        puts output.image_url
-        puts output.location
-        puts output.size
+        framing(output)
 
         editing_method(output)
     end
@@ -120,7 +111,7 @@ end
 
 
 
-def deciding_filters 
+def deciding_filters(user)
     answer = CLI::UI::Prompt.ask("choose how you would like to search through everyone's wardrobes") do |handler|
         handler.option('type')  { |selection| selection }
         handler.option('color')  { |selection| selection }
@@ -139,11 +130,11 @@ def deciding_filters
     end 
 
         if sec_answer == "top"
-            kinds_for_everyone("top")
+            kinds_for_everyone("top", user)
         elsif sec_answer == "bottom"
-            kinds_for_everyone('bottom')
+            kinds_for_everyone('bottom', user)
         elsif sec_answer == "shoes"
-            kinds_for_everyone('shoes')
+            kinds_for_everyone('shoes', user)
         end 
             
     elsif answer == "color"
@@ -160,21 +151,23 @@ def deciding_filters
     end 
 
         if sec_answer == "red"
-            colors_for_everyone("red")
+            colors_for_everyone("red", user)
         elsif sec_answer == "yellow"
-            colors_for_everyone("yellow")
+            colors_for_everyone("yellow", user)
         elsif sec_answer == "blue"
-            colors_for_everyone("blue")
+            colors_for_everyone("blue", user)
         elsif sec_answer == "green"
-            colors_for_everyone("green")
+            colors_for_everyone("green", user)
         elsif sec_answer == "black"
-            colors_for_everyone("black")
+            colors_for_everyone("black", user)
         elsif sec_answer == "orange"
-            colors_for_everyone("orange")
+            colors_for_everyone("orange", user)
         elsif sec_answer == "purple"
-            colors_for_everyone("purple")
+            colors_for_everyone("purple", user)
         elsif sec_answer == "white"
-            colors_for_everyone("white")
+            colors_for_everyone("white", user)
+        elsif sec_answer == "brown"
+            colors_for_everyone("brown", user)
         end 
 
     elsif answer == 'season'
@@ -185,9 +178,9 @@ def deciding_filters
         end 
 
         if sec_answer == "winter"
-            seasons_for_everyone("winter")
+            seasons_for_everyone("winter", user)
         elsif sec_answer == "summer"
-            seasons_for_everyone("summer")
+            seasons_for_everyone("summer", user)
         end 
 
     elsif answer == "purchased in the last year"
@@ -201,11 +194,7 @@ def editing_method(output)
 
     system "clear" 
 
-    CLI::UI::Frame.open('Item') { 
-        puts "type: #{output.kind}"
-        puts "color: #{output.color}"
-        puts output.location
-        puts output.size }
+   framing(output)
    
 
     editing = CLI::UI::Prompt.ask("do you want to edit this item?") do |handler|
@@ -217,8 +206,7 @@ def editing_method(output)
 
             output.destroy
 
-        elsif editing == 'edit'
-            system "clear"
+        elsif editing == 'edit' 
                 editing_attributes = CLI::UI::Prompt.ask("what would you like to edit?") do |handler|
                     handler.option('location of the item')  { |selection| selection }
                     handler.option('size of the item')  { |selection| selection }
@@ -235,12 +223,7 @@ def editing_method(output)
                     output.location = new_location
                     output.save 
 
-                    puts output.kind
-                    puts output.image_url
-                    puts output.location
-                    puts output.size
-                    puts output.color
-                    puts output.date
+                    framing(output)
 
                 elsif editing_attributes == 'size of the item'
                     system "clear"
@@ -249,12 +232,7 @@ def editing_method(output)
                     output.size = new_size
                     output.save 
 
-                    puts output.kind
-                    puts output.image_url
-                    puts output.location
-                    puts output.size
-                    puts output.color
-                    puts output.date
+                    framing(output)
 
                 elsif editing_attributes == 'color of the item'
                     system "clear"
@@ -263,12 +241,7 @@ def editing_method(output)
                     output.color = new_color 
                     output.save 
 
-                    puts output.kind
-                    puts output.image_url
-                    puts output.location
-                    puts output.size
-                    puts output.color
-                    puts output.date
+                    framing(output)
 
                 elsif editing_attributes == 'season of the item'
                     system "clear"
@@ -277,12 +250,7 @@ def editing_method(output)
                     output.season = new_season
                     output.save 
 
-                    puts output.kind
-                    puts output.image_url
-                    puts output.location
-                    puts output.size
-                    puts output.color
-                    puts output.date
+                    framing(output)
 
                 elsif editing_attributes == 'date purchased of the item'
                     system "clear"
@@ -291,18 +259,23 @@ def editing_method(output)
                     output.date = new_date
                     output.save 
 
-                    puts output.kind
-                    puts output.image_url
-                    puts output.location
-                    puts output.size
-                    puts output.color
-                    puts output.date
+                    framing(output)
                 end
         
         end 
     end 
 
 
+def framing(output)
+    CLI::UI::Frame.open('Item') { 
+        puts "type: #{output.kind}"
+        puts "color: #{output.color}"
+        puts "location: #{output.location}"
+        puts "size: #{output.size}"
+        puts "season: #{output.season}"
+        puts "date purchased: #{output.date}"
+     }
+end 
 
 
 def kinds_for_self(user, type, ward)
@@ -587,7 +560,6 @@ def showing_many_wardrobes(user_instance)
 
 end 
 
-
 def post_log_in(user_instance)
        
     wardrobe_choice = CLI::UI::Prompt.ask("Do you want to look at your wardrobe or everybody's wardrobes?") do |handler|
@@ -622,7 +594,7 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
         system "clear"
 
     elsif wardrobe_choice == "everyones wardrobe"
-        deciding_filters
+        deciding_filters(user_instance)
     elsif wardrobe_choice == "make new wardrobe"
         puts "enter a name for your new wardrobe"
         new_wardrobe_name = gets.chomp 
@@ -671,7 +643,7 @@ end
      
 
 def run 
-    puts "Welcome to Myo's Closet"
+    puts "Welcome to Myo's Closet".green
    
    answer2 = CLI::UI::Prompt.ask("login? or make a new account?") do |handler|
         handler.option('new account')  { |selection| selection }

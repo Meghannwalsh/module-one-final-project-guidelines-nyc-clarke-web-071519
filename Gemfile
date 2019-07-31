@@ -8,5 +8,7 @@ gem "pry"
 gem "require_all"
 gem "rake"
 gem 'cli-ui'
+gem "colorize"
+gem "font-awesome-rails"
 
 
