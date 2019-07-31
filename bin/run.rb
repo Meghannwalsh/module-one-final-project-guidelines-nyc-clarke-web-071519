@@ -8,32 +8,110 @@ require_relative '../app/models/wardrobe.rb'
 
 
 def kinds_for_everyone(type)
-    found = Item.all.where(kind: type)
-    found.each do |item|
-        puts [item.kind, item.location, item.size, item.image_url]
+    allItems = Item.all.where(kind: type)
+    if allItems.empty?
+        puts "sorry, there are no items here"
+
+        run
+
+    else
+        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+            allItems.each do |op|
+            handler.option(op.kind)  { |selection| selection }
+            end 
+        end 
+
+        output = allItems.find do |item|
+            item.kind == selection
+        end 
+
+        puts output.kind
+        puts output.image_url
+        puts output.location
+        puts output.size
+
+        editing_method(output)
     end 
 end 
 
 def colors_for_everyone(col)
-    found = Item.all.where(color: col)
-    found.each do |item|
-        puts [item.kind, item.location, item.size, item.image_url]
-    end 
+    allItems = Item.all.where(color: col)
+    if allItems.empty?
+        puts "sorry, there are no items here"
+
+        run
+    else
+        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+            allItems.each do |op|
+            handler.option(op.kind)  { |selection| selection }
+            end 
+        end 
+
+        output = allItems.find do |item|
+            item.kind == selection
+        end 
+
+        puts output.kind
+        puts output.image_url
+        puts output.location
+        puts output.size
+
+        editing_method(output)
+    end
 end 
     
 
 def seasons_for_everyone(seas)
-   found = Item.all.where(season: seas)
-   found.each do |item|
-        puts [item.kind, item.location, item.size, item.image_url]
-    end 
+   allItmes = Item.all.where(season: seas)
+   if allItems.empty?
+        puts "sorry, there are no items here"
+
+        run
+
+    else
+    selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+            allItems.each do |op|
+            handler.option(op.kind)  { |selection| selection }
+            end 
+        end 
+
+        output = allItems.find do |item|
+            item.kind == selection
+        end 
+
+        puts output.kind
+        puts output.image_url
+        puts output.location
+        puts output.size
+
+        editing_method(output)
+    end
 end 
 
 def date_for_everyone(date)
-    found = Item.all.where(date)
-    found.each do |item|
-        puts [item.kind, item.location, item.size, item.image_url]
-    end 
+    allItems = Item.all.where(date)
+    if allItems.empty?
+        puts "sorry, there are no items here"
+        run 
+
+    else
+        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+            allItems.each do |op|
+            handler.option(op.kind)  { |selection| selection }
+            end 
+        end 
+
+        output = allItems.find do |item|
+            item.kind == selection
+        end 
+
+        puts output.kind
+        puts output.image_url
+        puts output.location
+        puts output.size
+
+        editing_method(output)
+    end
 end 
 
 
@@ -113,39 +191,216 @@ end
 
 #-------------------------------------------------------------------------
 
+def editing_method(output)
+
+    editing = CLI::UI::Prompt.ask("do you want to edit this item?") do |handler|
+            handler.option('edit')  { |selection| selection }
+            handler.option('delete')  { |selection| selection }
+            handler.option('go back to the main page')  { |selection| selection }
+        end 
+        if editing == 'delete' 
+
+            output.destroy
+
+        elsif editing == 'edit'
+                editing_attributes = CLI::UI::Prompt.ask("what would you like to edit?") do |handler|
+                    handler.option('location of the item')  { |selection| selection }
+                    handler.option('size of the item')  { |selection| selection }
+                    handler.option('color of the item')  { |selection| selection }
+                    handler.option('season of the item')  { |selection| selection }
+                    handler.option('date purchased of the item')  { |selection| selection }
+                end 
+           
+                if editing_attributes == 'location of the item'
+                    puts 'what would you like the new location to be'
+                    new_location = gets.chomp
+                    output.location = new_location
+                    output.save 
+
+                    puts output.kind
+                    puts output.image_url
+                    puts output.location
+                    puts output.size
+                    puts output.color
+                    puts output.date
+
+                elsif editing_attributes == 'size of the item'
+                    puts 'what would you like the new size to be'
+                    new_size = gets.chomp
+                    output.size = new_size
+                    output.save 
+
+                    puts output.kind
+                    puts output.image_url
+                    puts output.location
+                    puts output.size
+                    puts output.color
+                    puts output.date
+
+                elsif editing_attributes == 'color of the item'
+                    puts 'what would you like the new color to be'
+                    new_color = gets.chomp
+                    output.color = new_color 
+                    output.save 
+
+                    puts output.kind
+                    puts output.image_url
+                    puts output.location
+                    puts output.size
+                    puts output.color
+                    puts output.date
+
+                elsif editing_attributes == 'season of the item'
+                    puts 'what would you like the new season to be'
+                    new_season = gets.chomp
+                    output.season = new_season
+                    output.save 
+
+                    puts output.kind
+                    puts output.image_url
+                    puts output.location
+                    puts output.size
+                    puts output.color
+                    puts output.date
+
+                elsif editing_attributes == 'date purchased of the item'
+                    puts 'what would you like the new purchased date to be'
+                    new_date = gets.chomp.to_i
+                    output.date = new_date
+                    output.save 
+
+                    puts output.kind
+                    puts output.image_url
+                    puts output.location
+                    puts output.size
+                    puts output.color
+                    puts output.date
+                end
+            
+        elsif editing == 'go back to the main page' 
+            run 
+        
+        end 
+    end 
+
+
+
+
 def kinds_for_self(user, type, ward)
-    binding.pry
-    found = user.ward.items.where(kind: type)
-    found.each do |item|
-        puts [item.kind, item.location, item.size, item.image_url]
+    
+    allItems = ward.items.where(kind: type)
+
+    if allItems.empty?
+        puts "sorry, there are no items here"
+
+        run
+
+    else
+        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+            allItems.each do |op|
+            handler.option(op.kind)  { |selection| selection }
+            end 
+        end 
+    
+        output = allItems.find do |item|
+            item.kind == selection
+        end 
+        puts output.kind
+        puts output.image_url
+        puts output.location
+        puts output.size
+
+        editing_method(output)
     end 
 end 
 
+
 def colors_for_self(user, col, ward)
-    found = user.ward.items.where(color: col)
-    found.each do |item|
-        puts [item.kind, item.location, item.size, item.image_url]
+    allItems = ward.items.where(color: col)
+    if allItems.empty?
+            puts "sorry, there are no items here"
+
+            run
+
+    else
+        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+            allItems.each do |op|
+            handler.option(op.kind)  { |selection| selection }
+            end 
+        end 
+
+        output = allItems.find do |item|
+            item.kind == selection
+        end 
+
+        puts output.kind
+        puts output.image_url
+        puts output.location
+        puts output.size
+
+        editing_method(output)
     end 
 end 
     
 
 def seasons_for_self(user, seas, ward)
-   found = user.ward.items.where(season: seas)
-   found.each do |item|
-        puts [item.kind, item.location, item.size, item.image_url]
-    end 
+    allItems = ward.items.where(season: seas)
+    if allItems.empty?
+        puts "sorry, there are no items here"
+
+        run 
+
+    else
+        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+            allItems.each do |op|
+            handler.option(op.kind)  { |selection| selection }
+            end 
+        end 
+
+        output = allItems.find do |item|
+            item.kind == selection
+        end 
+
+        puts output.kind
+        puts output.image_url
+        puts output.location
+        puts output.size
+
+        editing_method(output)
+    end
 end 
 
 def date_for_self(user, date, ward)
-    found = user.ward.items.where(date)
-    found.each do |item|
-        puts [item.kind, item.location, item.size, item.image_url]
-    end 
+    allItems = ward.items.where(date)
+    if allItems.empty?
+        puts "sorry, there are no items here"
+
+        run
+        
+    else
+        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+            allItems.each do |op|
+            handler.option(op.kind)  { |selection| selection }
+            end 
+        end 
+
+        output = allItems.find do |item|
+            item.kind == selection
+        end 
+
+        puts output.kind
+        puts output.image_url
+        puts output.location
+        puts output.size
+
+        editing_method(output)
+    end
 end 
 
  
 
-def deciding_filters_for_self(wardrobe, user_chosen)
+def deciding_filters_for_self(ward, user_chosen)
+    # binding.pry
  
   
     answer = CLI::UI::Prompt.ask("choose how you would like to search through your wardrobe") do |handler|
@@ -166,11 +421,11 @@ def deciding_filters_for_self(wardrobe, user_chosen)
     end 
   
         if sec_answer == "top"
-            kinds_for_self(user_chosen, "top", wardrobe)
+            kinds_for_self(user_chosen, "top", ward)
         elsif sec_answer == "bottom"
-            kinds_for_self(user_chosen, 'bottom', wardrobe)
+            kinds_for_self(user_chosen, 'bottom', ward)
         elsif sec_answer == "shoes"
-            kinds_for_self(user_chosen, 'shoes', wardrobe)
+            kinds_for_self(user_chosen, 'shoes', ward)
         end 
             
     elsif answer == "color"
@@ -186,21 +441,24 @@ def deciding_filters_for_self(wardrobe, user_chosen)
     end 
 
         if sec_answer == "red"
-            colors_for_self(user_chosen, "red", wardrobe)
+            colors_for_self(user_chosen, "red", ward)
+            
+            #method where they can select item and be brought to that item
         elsif sec_answer == "yellow"
-            colors_for_self(user_chosen, "yellow", wardrobe)
+            colors_for_self(user_chosen, "yellow", ward)
         elsif sec_answer == "blue"
-            colors_for_self(user_chosen, "blue", wardrobe)
+            colors_for_self(user_chosen, "blue", ward)
+
         elsif sec_answer == "green"
-            colors_for_self(user_chosen, "green", wardrobe)
+            colors_for_self(user_chosen, "green", ward)
         elsif sec_answer == "black"
-            colors_for_self(user_chosen, "black", wardrobe)
+            colors_for_self(user_chosen, "black", ward)
         elsif sec_answer == "orange"
-            colors_for_self(user_chosen, "orange", wardrobe)
+            colors_for_self(user_chosen, "orange", ward)
         elsif sec_answer == "purple"
-            colors_for_self(user_chosen, "purple", wardrobe)
+            colors_for_self(user_chosen, "purple", ward)
         elsif sec_answer == "white"
-            colors_for_self(user_chosen, "white", wardrobe)
+            colors_for_self(user_chosen, "white", ward)
         end 
 
     elsif answer == 'season'
@@ -210,9 +468,9 @@ def deciding_filters_for_self(wardrobe, user_chosen)
         end 
 
         if sec_answer == "winter"
-            seasons_for_self(user_chosen, "winter", wardrobe)
+            seasons_for_self(user_chosen, "winter", ward)
         elsif sec_answer == "summer"
-            seasons_for_self(user_chosen, "summer", wardrobe)
+            seasons_for_self(user_chosen, "summer", ward)
         end 
 
     elsif answer == "purchased in the last year"
@@ -255,6 +513,8 @@ def deciding_filters_for_self(wardrobe, user_chosen)
     end 
     
 end 
+
+
 
 def get_wardrobe_from_name(name)
     Wardrobe.all.find do |wardrobe|
@@ -318,17 +578,20 @@ def run
  
     
     if wardrobe_choice == "your wardrobe"
-    
-        if user_instance.new_wardrobes.all.length > 1
-wardrobe_name_chosen =  CLI::UI::Prompt.ask("login? or make a new account?") do |handler|
-             user_instance.new_wardrobes.each do |ward|
+        
+        if user_instance.new_wardrobes.length > 1
+wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would like to enter") do |handler|
+        
+                user_instance.new_wardrobes.each do |ward|
                 handler.option(ward.name)  { |selection| selection }
             end 
-            binding.pry
         end 
+
+    
+        wardrobe_chosen = get_wardrobe_from_name(wardrobe_name_chosen)
         
-            wardrobe_chosen = get_wardrobe_from_name(wardrobe_name_chosen)
-            deciding_filters_for_self(wardrobe_chosen, user_instance)
+        deciding_filters_for_self(wardrobe_chosen, user_instance)
+
         elsif user_instance.new_wardrobes.all.length == 1
         
             deciding_filters_for_self(user_instance.new_wardrobes[0], user_instance)
