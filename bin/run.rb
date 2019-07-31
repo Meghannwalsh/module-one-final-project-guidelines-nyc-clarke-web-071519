@@ -640,8 +640,17 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
     back_to_main_page(user_instance)
  
 end 
-     
 
+def invalid_name(user_instance)
+    User.all.each do |user|
+        if user == user_instance
+            puts "That is a valid name"
+            post_log_in(user)
+        end
+    end 
+    puts "This is an invalid name"
+    run
+end 
 def run 
     puts "Welcome to Myo's Closet".green
    
@@ -666,6 +675,7 @@ def run
     user_instance = User.all.find do |user|
         user.name == name
     end  
+    invalid_name(user_instance)
 
     system "clear"
 
