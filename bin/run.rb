@@ -26,10 +26,10 @@ def kinds_for_everyone(type)
             item.kind == selection
         end 
 
-        puts output.kind
-        puts output.image_url
-        puts output.location
-        puts output.size
+
+        CLI::UI::Frame.open('Open') { puts 'hi' }
+                
+      
 
         editing_method(output)
     end 
@@ -201,9 +201,17 @@ def editing_method(output)
 
     system "clear" 
 
+    CLI::UI::Frame.open('Item') { 
+        puts "type: #{output.kind}"
+        puts "color: #{output.color}"
+        puts output.location
+        puts output.size }
+   
+
     editing = CLI::UI::Prompt.ask("do you want to edit this item?") do |handler|
             handler.option('edit')  { |selection| selection }
             handler.option('delete')  { |selection| selection }
+            handler.option('no')  { |selection| selection }
         end 
         if editing == 'delete' 
 
@@ -315,10 +323,12 @@ def kinds_for_self(user, type, ward)
         output = allItems.find do |item|
             item.kind == selection
         end 
-        puts output.kind
-        puts output.image_url
-        puts output.location
-        puts output.size
+
+         CLI::UI::Frame.open('Open') { puts 'hi' }
+        # puts output.kind
+        # puts output.image_url
+        # puts output.location
+        # puts output.size
 
         editing_method(output)
     end 
@@ -614,10 +624,13 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
     elsif wardrobe_choice == "everyones wardrobe"
         deciding_filters
     elsif wardrobe_choice == "make new wardrobe"
-        puts "enter the name of new wardrobe"
+        puts "enter a name for your new wardrobe"
         new_wardrobe_name = gets.chomp 
 
+        system "clear"
+
         make_new_wardrobe(user_instance.id, new_wardrobe_name)
+        puts "you now have a new wardrobe: #{new_wardrobe_name}"
 
     elsif wardrobe_choice == "clean out wardrobe"
         clean_wardrobe =  CLI::UI::Prompt.ask("Choose which wardrobe you would like to clean out") do |handler|
@@ -626,15 +639,16 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
             end 
         end 
 
+
+        system "clear"
+
         
         selected_wardrobe = user_instance.new_wardrobes.find do |wardrobe|
                     wardrobe.name == clean_wardrobe
                     end 
 
-    back_to_main_page(user_instance)
- 
-end 
-        puts "enter the year you want to clean out before that year purchased"
+
+        puts "Clean out your closet! Enter a year so that we can clean out all of the items you purchased before that year"
         answer = gets.chomp.to_i
        
 
@@ -644,7 +658,17 @@ end
                 item.destroy 
             end 
         end 
+         system "clear"
+ 
+         puts "Your Wardrobe is clean!!"
     end 
+
+
+    
+    back_to_main_page(user_instance)
+ 
+end 
+     
 
 def run 
     puts "Welcome to Myo's Closet"
