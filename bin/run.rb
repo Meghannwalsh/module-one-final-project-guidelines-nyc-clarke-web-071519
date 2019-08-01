@@ -117,6 +117,7 @@ def deciding_filters(user)
         handler.option('color')  { |selection| selection }
         handler.option('season')  { |selection| selection }
         handler.option('purchased in the last year')  { |selection| selection }
+        handler.option('back')  { |selection| selection }
     end 
 
     system "clear" 
@@ -185,6 +186,10 @@ def deciding_filters(user)
 
     elsif answer == "purchased in the last year"
             date_for_everyone("date > 2018")
+
+
+    elsif answer == "back"
+        #go back to the last frame  
     end 
 end 
 
@@ -651,6 +656,7 @@ def invalid_name(user_instance)
     puts "This is an invalid name"
     run
 end 
+
 def run 
     puts "Welcome to Myo's Closet".green
    
