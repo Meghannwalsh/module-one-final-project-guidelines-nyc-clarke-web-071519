@@ -352,7 +352,7 @@ def editing_method(output)
                            output.season = new_season
                            output.save
 
-                           puts "Here is your updated item!"
+                            puts "Here is your updated item!"
                           framing(output)
                        else
                            editing_method(output)
