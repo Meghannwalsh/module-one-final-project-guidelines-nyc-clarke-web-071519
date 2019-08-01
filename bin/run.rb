@@ -9,18 +9,22 @@ require_relative '../app/models/wardrobe.rb'
 
 def kinds_for_everyone(type, user)
     allItems = Item.all.where(kind: type)
+   
     if allItems.empty?
         puts "sorry, there are no items here"
         
         back_to_main_page(user)
     else
-        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        
             allItems.each do |op|
-            handler.option(op.kind)  { |selection| selection }
+            handler.option("#{op.kind} -- #{op.color} -- #{op.location} -- #{op.size} -- #{op.date}")  { |selection| selection }
             end 
         end 
 
-        system "clear"
+        arr = choice.split(" -- ")
+        selection = arr[0]
+
 
         output = allItems.find do |item|
             item.kind == selection
@@ -41,13 +45,16 @@ def colors_for_everyone(col, user)
         puts "sorry, there are no items here"
         back_to_main_page(user)
     else
-        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        
             allItems.each do |op|
-            handler.option(op.kind)  { |selection| selection }
+            handler.option("#{op.kind} -- #{op.color} -- #{op.location} -- #{op.size} -- #{op.date}")  { |selection| selection }
             end 
         end 
 
-        system "clear"
+        arr = choice.split(" -- ")
+        selection = arr[0]
+
 
         output = allItems.find do |item|
             item.kind == selection
@@ -61,19 +68,22 @@ end
     
 
 def seasons_for_everyone(seas, user)
-   allItmes = Item.all.where(season: seas)
+   allItems = Item.all.where(season: seas)
    if allItems.empty?
         puts "sorry, there are no items here"
         back_to_main_page(user)
 
     else
-    selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+    choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        
             allItems.each do |op|
-            handler.option(op.kind)  { |selection| selection }
+            handler.option("#{op.kind} -- #{op.color} -- #{op.location} -- #{op.size} -- #{op.date}")  { |selection| selection }
             end 
         end 
 
-        system "clear"
+        arr = choice.split(" -- ")
+        selection = arr[0]
+
         output = allItems.find do |item|
             item.kind == selection
         end 
@@ -91,13 +101,16 @@ def date_for_everyone(date, user)
         back_to_main_page(user)
 
     else
-        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        
             allItems.each do |op|
-            handler.option(op.kind)  { |selection| selection }
+            handler.option("#{op.kind} -- #{op.color} -- #{op.location} -- #{op.size} -- #{op.date}")  { |selection| selection }
             end 
         end 
 
-        system "clear"
+        arr = choice.split(" -- ")
+        selection = arr[0]
+
 
         output = allItems.find do |item|
             item.kind == selection
@@ -128,6 +141,7 @@ def deciding_filters(user)
         handler.option('top')  { |selection| selection }
         handler.option('bottom')  { |selection| selection }
         handler.option('shoes')  { |selection| selection }
+        handler.option('back')  { |selection| selection }
     end 
 
         if sec_answer == "top"
@@ -136,6 +150,8 @@ def deciding_filters(user)
             kinds_for_everyone('bottom', user)
         elsif sec_answer == "shoes"
             kinds_for_everyone('shoes', user)
+        elsif sec_answer == "back"
+            deciding_filters(user)
         end 
             
     elsif answer == "color"
@@ -149,6 +165,7 @@ def deciding_filters(user)
         handler.option('orange')  { |selection| selection }
         handler.option('purple')  { |selection| selection }
         handler.option('white')  { |selection| selection }
+        handler.option('back')  { |selection| selection }
     end 
 
         if sec_answer == "red"
@@ -169,6 +186,8 @@ def deciding_filters(user)
             colors_for_everyone("white", user)
         elsif sec_answer == "brown"
             colors_for_everyone("brown", user)
+        elsif sec_answer == "back"
+            deciding_filters(user)
         end 
 
     elsif answer == 'season'
@@ -176,22 +195,25 @@ def deciding_filters(user)
         sec_answer = CLI::UI::Prompt.ask("choose the season of clothing you would like to search through") do |handler|
         handler.option('winter')  { |selection| selection }
         handler.option('summer')  { |selection| selection }
+        handler.option('back')  { |selection| selection }
         end 
 
         if sec_answer == "winter"
             seasons_for_everyone("winter", user)
         elsif sec_answer == "summer"
             seasons_for_everyone("summer", user)
+        elsif sec_answer == "back"
+            deciding_filters(user)
         end 
 
     elsif answer == "purchased in the last year"
-            date_for_everyone("date > 2018")
+            date_for_everyone("date > 2018", user)
 
 
     elsif answer == "back"
-        #go back to the last frame  
+        post_log_in(user)
     end 
-end 
+end  
 
 #-------------------------------------------------------------------------
 
@@ -292,11 +314,16 @@ def kinds_for_self(user, type, ward)
 
         back_to_main_page(user)
     else
-        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        
             allItems.each do |op|
-            handler.option(op.kind)  { |selection| selection }
+            handler.option("#{op.kind} -- #{op.color} -- #{op.location} -- #{op.size} -- #{op.date}")  { |selection| selection }
             end 
         end 
+
+        arr = choice.split(" -- ")
+        selection = arr[0]
+
     
         output = allItems.find do |item|
             item.kind == selection
@@ -320,11 +347,16 @@ def colors_for_self(user, col, ward)
         back_to_main_page(user)
     else
         system "clear"
-        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+       choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        
             allItems.each do |op|
-            handler.option(op.kind)  { |selection| selection }
+            handler.option("#{op.kind} -- #{op.color} -- #{op.location} -- #{op.size} -- #{op.date}")  { |selection| selection }
             end 
         end 
+
+        arr = choice.split(" -- ")
+        selection = arr[0]
+
 
         output = allItems.find do |item|
             item.kind == selection
@@ -346,11 +378,16 @@ def seasons_for_self(user, seas, ward)
         puts "sorry, there are no items here"
         back_to_main_page(user)
     else
-        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+       choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        
             allItems.each do |op|
-            handler.option(op.kind)  { |selection| selection }
+            handler.option("#{op.kind} -- #{op.color} -- #{op.location} -- #{op.size} -- #{op.date}")  { |selection| selection }
             end 
         end 
+
+        arr = choice.split(" -- ")
+        selection = arr[0]
+
 
         output = allItems.find do |item|
             item.kind == selection
@@ -372,11 +409,16 @@ def date_for_self(user, date, ward)
         back_to_main_page(user)
 
     else
-        selection = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
+        
             allItems.each do |op|
-            handler.option(op.kind)  { |selection| selection }
+            handler.option("#{op.kind} -- #{op.color} -- #{op.location} -- #{op.size} -- #{op.date}")  { |selection| selection }
             end 
         end 
+
+        arr = choice.split(" -- ")
+        selection = arr[0]
+
 
         output = allItems.find do |item|
             item.kind == selection
@@ -401,6 +443,7 @@ def deciding_filters_for_self(ward, user_chosen)
         handler.option('season')  { |selection| selection }
         handler.option('purchased in the last year')  { |selection| selection }
         handler.option('add new item')  { |selection| selection }
+        handler.option('back')  { |selection| selection }
     end 
     
     system "clear"
@@ -411,6 +454,7 @@ def deciding_filters_for_self(ward, user_chosen)
         handler.option('top')  { |selection| selection }
         handler.option('bottom')  { |selection| selection }
         handler.option('shoes')  { |selection| selection }
+        handler.option('back')  { |selection| selection }
     end 
   
         if sec_answer == "top"
@@ -419,6 +463,8 @@ def deciding_filters_for_self(ward, user_chosen)
             kinds_for_self(user_chosen, 'bottom', ward)
         elsif sec_answer == "shoes"
             kinds_for_self(user_chosen, 'shoes', ward)
+        elsif sec_answer == "back"
+            deciding_filters_for_self(ward, user_chosen)
         end 
 
         system "clear"
@@ -433,6 +479,7 @@ def deciding_filters_for_self(ward, user_chosen)
         handler.option('orange')  { |selection| selection }
         handler.option('purple')  { |selection| selection }
         handler.option('white')  { |selection| selection }
+        handler.option('back')  { |selection| selection }
     end 
 
         if sec_answer == "red"
@@ -454,6 +501,8 @@ def deciding_filters_for_self(ward, user_chosen)
             colors_for_self(user_chosen, "purple", ward)
         elsif sec_answer == "white"
             colors_for_self(user_chosen, "white", ward)
+        elsif sec_answer == "back"
+            deciding_filters_for_self(ward, user_chosen)
         end 
 
         system "clear"
@@ -462,19 +511,22 @@ def deciding_filters_for_self(ward, user_chosen)
          sec_answer = CLI::UI::Prompt.ask("choose the season of clothing you would like to search through") do |handler|
         handler.option('winter')  { |selection| selection }
         handler.option('summer')  { |selection| selection }
+        handler.option('back')  { |selection| selection }
         end 
 
         if sec_answer == "winter"
             seasons_for_self(user_chosen, "winter", ward)
         elsif sec_answer == "summer"
             seasons_for_self(user_chosen, "summer", ward)
+        elsif sec_answer == "back"
+            deciding_filters_for_self(ward, user_chosen)
 
         end 
 
         system "clear"
 
     elsif answer == "purchased in the last year"
-            date_for_self("date > 2018")
+            date_for_self(user_chosen, "date > 2018", ward)
         
         system "clear"
 
@@ -510,8 +562,8 @@ def deciding_filters_for_self(ward, user_chosen)
         image_url = gets.chomp 
 
         add_new_item(type, color, season, location, date, size, user_id, wardrobe.id, image_url)
-
-
+    elsif answer == "back"
+        post_log_in(user_chosen)
     end 
     
 end 
@@ -565,6 +617,17 @@ def showing_many_wardrobes(user_instance)
 
 end 
 
+def invalid_name(user_instance)
+    User.all.each do |user|
+        if user == user_instance
+            puts "That is a valid name"
+            post_log_in(user)
+        end
+    end 
+    puts "This is an invalid name"
+    run
+end 
+
 def post_log_in(user_instance)
        
     wardrobe_choice = CLI::UI::Prompt.ask("Do you want to look at your wardrobe or everybody's wardrobes?") do |handler|
@@ -572,6 +635,7 @@ def post_log_in(user_instance)
         handler.option('everyones wardrobe')  { |selection| selection }
         handler.option('make new wardrobe')  { |selection| selection }
         handler.option('clean out wardrobe')  { |selection| selection }
+        handler.option('back')  { |selection| selection }
     end 
  
     system "clear"
@@ -616,19 +680,13 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
             end 
         end 
 
-
         system "clear"
 
-        
         selected_wardrobe = user_instance.new_wardrobes.find do |wardrobe|
                     wardrobe.name == clean_wardrobe
                     end 
-
-
         puts "Clean out your closet! Enter a year so that we can clean out all of the items you purchased before that year"
         answer = gets.chomp.to_i
-       
-
         selected_wardrobe.items.each do |item|
             year = item.date
             if year < answer 
@@ -638,6 +696,8 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
          system "clear"
  
          puts "Your Wardrobe is clean!!"
+    elsif wardrobe_choice == "back"
+        run
     end 
 
 
@@ -646,16 +706,6 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
  
 end 
 
-def invalid_name(user_instance)
-    User.all.each do |user|
-        if user == user_instance
-            puts "That is a valid name"
-            post_log_in(user)
-        end
-    end 
-    puts "This is an invalid name"
-    run
-end 
 
 def run 
     puts "Welcome to Myo's Closet".green
