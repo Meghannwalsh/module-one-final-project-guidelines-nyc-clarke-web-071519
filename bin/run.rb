@@ -15,6 +15,7 @@ def kinds_for_everyone(type, user)
         
         back_to_main_page(user)
     else
+        system "clear"
         choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
         
             allItems.each do |op|
@@ -26,6 +27,7 @@ def kinds_for_everyone(type, user)
         output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
 
+        system "clear"
         framing(output)
                 
       
@@ -40,6 +42,7 @@ def colors_for_everyone(col, user)
         puts "sorry, there are no items here"
         back_to_main_page(user)
     else
+        system "clear"
         choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
         
             allItems.each do |op|
@@ -52,7 +55,7 @@ def colors_for_everyone(col, user)
 
      output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
-        
+        system "clear"
         framing(output)
 
         editing_method(output)
@@ -68,6 +71,7 @@ def seasons_for_everyone(seas, user)
         back_to_main_page(user)
 
     else
+        system "clear"
     choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
             allItems.each do |op|
             handler.option("#{op.kind} -- #{op.color} -- #{op.location} -- #{op.size} -- #{op.date}")  { |selection| selection }
@@ -80,7 +84,7 @@ def seasons_for_everyone(seas, user)
         output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
         
-
+        system "clear"
        framing(output)
 
         editing_method(output)
@@ -94,6 +98,7 @@ def date_for_everyone(date, user)
         back_to_main_page(user)
 
     else
+        system "clear"
         choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
         
             allItems.each do |op|
@@ -104,6 +109,8 @@ def date_for_everyone(date, user)
         arr = choice.split(" -- ")
         output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
+        system "clear"
+
         framing(output)
 
         editing_method(output)
@@ -113,6 +120,9 @@ end
 
 
 def deciding_filters(user)
+
+    system "clear"
+
     answer = CLI::UI::Prompt.ask("choose how you would like to search through everyone's wardrobes") do |handler|
         handler.option('type')  { |selection| selection }
         handler.option('color')  { |selection| selection }
@@ -124,6 +134,8 @@ def deciding_filters(user)
     system "clear" 
 
     if answer == "type"
+
+        system "clear"
        
         sec_answer = CLI::UI::Prompt.ask("choose the type of clothing you would like to search through") do |handler|
         handler.option('top')  { |selection| selection }
@@ -234,7 +246,6 @@ end
 def editing_method(output)
 
 
-#    framing(output)
    
 
     editing = CLI::UI::Prompt.ask("do you want to edit this item?") do |handler|
@@ -262,9 +273,11 @@ def editing_method(output)
                     puts "select a wardrobe to move your item to"
                     moving_wardrobes(output)
 
+                    system "clear"
                     framing(output)
  
                 elsif editing_attributes == 'type of the item'
+                    system "clear"
                  
                    puts 'what would you like the new type to be'
                    new_type = gets.chomp
@@ -274,6 +287,7 @@ def editing_method(output)
 
                        puts "Here is your updated item!"
                 
+                       system "clear"
                        framing(output)
 
                    else
@@ -289,6 +303,7 @@ def editing_method(output)
                            output.kind = new_type
                            output.save
 
+                           system "clear"
                            framing(output)
                         
                        else
@@ -339,6 +354,7 @@ def editing_method(output)
                            output.color = new_color
                            output.save
 
+                           system "clear"
                            puts "Here is your updated item!"
                            
                            framing(output)
@@ -368,7 +384,7 @@ def editing_method(output)
                            SEASONS.push(new_season)
                            output.season = new_season
                            output.save
-
+                        system "clear"
                             puts "Here is your updated item!"
                           framing(output)
                        else
@@ -419,6 +435,7 @@ def kinds_for_self(user, type, ward)
 
         back_to_main_page(user)
     else
+        system "clear"
         choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
         
             allItems.each do |op|
@@ -429,6 +446,7 @@ def kinds_for_self(user, type, ward)
         arr = choice.split(" -- ")
         output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
+        system "clear"
          framing(output)
       
 
@@ -443,7 +461,7 @@ def colors_for_self(user, col, ward)
             puts "sorry, there are no items here"
         back_to_main_page(user)
     else
-        
+        system "clear"
        choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
         
             allItems.each do |op|
@@ -454,6 +472,7 @@ def colors_for_self(user, col, ward)
         arr = choice.split(" -- ")
         output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
+        system "clear"
         framing(output)
 
         editing_method(output)
@@ -467,6 +486,7 @@ def seasons_for_self(user, seas, ward)
         puts "sorry, there are no items here"
         back_to_main_page(user)
     else
+        system "clear"
        choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
         
             allItems.each do |op|
@@ -477,6 +497,7 @@ def seasons_for_self(user, seas, ward)
         arr = choice.split(" -- ")
         output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
+        system "clear"
         framing(output)
 
         editing_method(output)
@@ -490,6 +511,7 @@ def seeing_all_items(user, ward)
         puts "sorry, there are no items here"
         back_to_main_page(user)
     else
+        system "clear"
        choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
         
             allItems.each do |op|
@@ -500,6 +522,7 @@ def seeing_all_items(user, ward)
         arr = choice.split(" -- ")
         output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
+        system "clear"
         framing(output)
 
         editing_method(output)
@@ -514,6 +537,7 @@ def date_for_self(user, date, ward)
         back_to_main_page(user)
 
     else
+        system "clear"
         choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
         
             allItems.each do |op|
@@ -524,6 +548,7 @@ def date_for_self(user, date, ward)
         arr = choice.split(" -- ")
         output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
+        system "clear"
         framing(output)
 
         editing_method(output)
@@ -533,6 +558,7 @@ end
 
 def deciding_filters_for_self(ward, user_chosen)
  
+    system "clear"
   
     answer = CLI::UI::Prompt.ask("choose how you would like to search through your wardrobe") do |handler|
         handler.option('see all items')  { |selection| selection }
@@ -633,6 +659,8 @@ def deciding_filters_for_self(ward, user_chosen)
     
         user_id = user_chosen.id 
 
+        system "clear"
+
         puts "enter type of item (ex. top, bottom, shoes)"
         type = gets.chomp 
         puts "enter color of item"
@@ -657,7 +685,14 @@ def deciding_filters_for_self(ward, user_chosen)
         puts "enter year purchased"
         date = gets.chomp.to_i
 
-        add_new_item(type, color, season, location, date, size, user_id, wardrobe.id, image_url)
+       output = add_new_item(type, color, season, location, date, size, user_id, wardrobe.id)
+
+        put "Your item has been added!"
+
+        framing(output)
+
+
+
     elsif answer == "back"
         post_log_in(user_chosen)
     end 
@@ -727,6 +762,8 @@ end
 
 
 def post_log_in(user_instance)
+
+    system "clear"
     wardrobe_choice = CLI::UI::Prompt.ask("Do you want to look at your wardrobe or everybody's wardrobes?") do |handler|
         handler.option('your wardrobe')  { |selection| selection }
         handler.option('everyones wardrobe')  { |selection| selection }
@@ -741,6 +778,8 @@ def post_log_in(user_instance)
         
         if user_instance.new_wardrobes.length > 1
 
+            system "clear"
+
 wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would like to enter") do |handler|
                 user_instance.new_wardrobes.each do |ward|
                 handler.option(ward.name)  { |selection| selection }
@@ -754,6 +793,7 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
         deciding_filters_for_self(wardrobe_chosen, user_instance)
 
         elsif user_instance.new_wardrobes.all.length == 1
+            system "clear"
         
             deciding_filters_for_self(user_instance.new_wardrobes[0], user_instance)
         end 
@@ -761,8 +801,10 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
         
 
     elsif wardrobe_choice == "everyones wardrobe"
+        system "clear"
         deciding_filters(user_instance)
     elsif wardrobe_choice == "make new wardrobe"
+        system "clear"
         puts "enter a name for your new wardrobe"
         new_wardrobe_name = gets.chomp 
 
@@ -771,7 +813,9 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
         make_new_wardrobe(user_instance.id, new_wardrobe_name)
         puts "you now have a new wardrobe: #{new_wardrobe_name}"
 
+    
     elsif wardrobe_choice == "clean out wardrobe"
+        system "clear"
         clean_wardrobe =  CLI::UI::Prompt.ask("Choose which wardrobe you would like to clean out") do |handler|
             user_instance.new_wardrobes.each do |ward|
             handler.option(ward.name)  { |selection| selection }
@@ -783,6 +827,7 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
         selected_wardrobe = user_instance.new_wardrobes.find do |wardrobe|
                     wardrobe.name == clean_wardrobe
                     end 
+                    system "clear"
         puts "Clean out your closet! Enter a year so that we can clean out all of the items you purchased before that year"
         answer = gets.chomp.to_i
         selected_wardrobe.items.each do |item|
@@ -792,8 +837,17 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
             end 
         end 
          
+        system "clear"
  
-         puts "Your Wardrobe is clean!!"
+
+         puts "These are all of the things that you cleaned out!"
+            selected_wardrobe.items.each do |item|
+            year = item.date
+            if year < answer 
+                framing(item)
+            end 
+        end 
+
     elsif wardrobe_choice == "back"
         run
     end 
@@ -829,7 +883,11 @@ def run
     end  
     invalid_name(user_instance)
 
+    system "clear"
+
    post_log_in(user_instance)
+
+
   
 end 
 
