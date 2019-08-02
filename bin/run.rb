@@ -23,19 +23,7 @@ def kinds_for_everyone(type, user)
         end 
 
         arr = choice.split(" -- ")
-        output = allItems.each do |item|
-            if item.kind == arr[0]
-                if item.color == arr[1]
-                    if item.location == arr[2]
-                        if item.size == arr[3]
-                             if item.date == arr[4]
-                                return item
-                             end 
-                        end 
-                    end 
-                end 
-            end 
-        end 
+        output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
 
         framing(output)
