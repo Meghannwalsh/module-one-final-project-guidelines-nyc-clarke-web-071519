@@ -225,7 +225,7 @@ SEASONS = ['summer', 'winter']
 def editing_method(output)
 
 
-   framing(output)
+#    framing(output)
    
 
     editing = CLI::UI::Prompt.ask("do you want to edit this item?") do |handler|
@@ -665,9 +665,6 @@ def deciding_filters_for_self(ward, user_chosen)
         puts "enter year purchased"
         date = gets.chomp.to_i
 
-        puts "enter image url if you have one"
-        image_url = gets.chomp 
-
         add_new_item(type, color, season, location, date, size, user_id, wardrobe.id, image_url)
     elsif answer == "back"
         post_log_in(user_chosen)
@@ -735,8 +732,9 @@ def invalid_name(user_instance)
     run
 end 
 
+
+
 def post_log_in(user_instance)
-       
     wardrobe_choice = CLI::UI::Prompt.ask("Do you want to look at your wardrobe or everybody's wardrobes?") do |handler|
         handler.option('your wardrobe')  { |selection| selection }
         handler.option('everyones wardrobe')  { |selection| selection }
@@ -750,6 +748,7 @@ def post_log_in(user_instance)
     if wardrobe_choice == "your wardrobe"
         
         if user_instance.new_wardrobes.length > 1
+
 wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would like to enter") do |handler|
                 user_instance.new_wardrobes.each do |ward|
                 handler.option(ward.name)  { |selection| selection }
@@ -806,8 +805,6 @@ wardrobe_name_chosen =  CLI::UI::Prompt.ask("Choose which wardrobe you would lik
     elsif wardrobe_choice == "back"
         run
     end 
-
-
     
     back_to_main_page(user_instance)
  
@@ -822,15 +819,16 @@ def run
         handler.option('login')  { |selection| selection }
     end 
 
-   
+   system "clear"
     
     if answer2 == 'new account'
+
         puts "please enter your name to create account"
         new_name = gets.chomp
         make_new_account(new_name)
         puts "your account is made"
     end 
-
+    
 
     puts "Enter your name to log in"
     name = gets.chomp 
@@ -838,8 +836,6 @@ def run
         user.name == name
     end  
     invalid_name(user_instance)
-
-    
 
    post_log_in(user_instance)
   
