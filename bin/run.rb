@@ -23,11 +23,18 @@ def kinds_for_everyone(type, user)
         end 
 
         arr = choice.split(" -- ")
-        selection = arr[0]
-
-
-        output = allItems.find do |item|
-            item.kind == selection
+        output = allItems.each do |item|
+            if item.kind == arr[0]
+                if item.color == arr[1]
+                    if item.location == arr[2]
+                        if item.size == arr[3]
+                             if item.date == arr[4]
+                                return item
+                             end 
+                        end 
+                    end 
+                end 
+            end 
         end 
 
 
@@ -51,20 +58,19 @@ def colors_for_everyone(col, user)
             handler.option("#{op.kind} -- #{op.color} -- #{op.location} -- #{op.size} -- #{op.date}")  { |selection| selection }
             end 
         end 
+        
 
         arr = choice.split(" -- ")
-        selection = arr[0]
 
+     output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
-        output = allItems.find do |item|
-            item.kind == selection
-        end 
-
+        
         framing(output)
 
         editing_method(output)
     end
 end 
+
     
 
 def seasons_for_everyone(seas, user)
@@ -75,18 +81,17 @@ def seasons_for_everyone(seas, user)
 
     else
     choice = CLI::UI::Prompt.ask("select an item for a closer look") do |handler|
-        
             allItems.each do |op|
             handler.option("#{op.kind} -- #{op.color} -- #{op.location} -- #{op.size} -- #{op.date}")  { |selection| selection }
             end 
         end 
 
         arr = choice.split(" -- ")
-        selection = arr[0]
+       
 
-        output = allItems.find do |item|
-            item.kind == selection
-        end 
+        output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
+
+        
 
        framing(output)
 
@@ -109,12 +114,7 @@ def date_for_everyone(date, user)
         end 
 
         arr = choice.split(" -- ")
-        selection = arr[0]
-
-
-        output = allItems.find do |item|
-            item.kind == selection
-        end 
+        output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
         framing(output)
 
@@ -221,6 +221,27 @@ COLORS = ['red', 'yellow', 'blue', 'green', 'black', 'orange', 'purple', 'white'
 TYPES = ['top', 'bottom', 'shoes']
 SEASONS = ['summer', 'winter']
 
+def moving_wardrobes(item)
+    ward_name_chosen = CLI::UI::Prompt.ask("what would you like to edit?") do |handler|
+        Wardrobe.all.each do |ward|
+            handler.option(ward.name)  { |selection| selection }
+        end 
+    end 
+
+    ward_chosen = Wardrobe.all.find do |ward|
+        ward.name == ward_name_chosen
+    end 
+
+   item.wardrobe_id = ward_chosen.id 
+   item.save
+
+   puts "You moved item to #{ward_name_chosen}!"
+
+
+
+end 
+
+
 
 def editing_method(output)
 
@@ -245,9 +266,17 @@ def editing_method(output)
                     handler.option('season of the item')  { |selection| selection }
                     handler.option('date purchased of the item')  { |selection| selection }
                     handler.option('type of the item')  { |selection| selection }
+                    handler.option("move item to a diffrent wardrobe")  { |selection| selection }
                 end 
 
-                if editing_attributes == 'type of the item'
+
+                if editing_attributes == "move item to a diffrent wardrobe"
+                    puts "select a wardrobe to move your item to"
+                    moving_wardrobes(output)
+
+                    framing(output)
+ 
+                elsif editing_attributes == 'type of the item'
                  
                    puts 'what would you like the new type to be'
                    new_type = gets.chomp
@@ -410,12 +439,7 @@ def kinds_for_self(user, type, ward)
         end 
 
         arr = choice.split(" -- ")
-        selection = arr[0]
-
-    
-        output = allItems.find do |item|
-            item.kind == selection
-        end 
+        output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
          framing(output)
       
@@ -440,12 +464,7 @@ def colors_for_self(user, col, ward)
         end 
 
         arr = choice.split(" -- ")
-        selection = arr[0]
-
-
-        output = allItems.find do |item|
-            item.kind == selection
-        end 
+        output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
         framing(output)
 
@@ -468,12 +487,7 @@ def seasons_for_self(user, seas, ward)
         end 
 
         arr = choice.split(" -- ")
-        selection = arr[0]
-
-
-        output = allItems.find do |item|
-            item.kind == selection
-        end 
+        output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
         framing(output)
 
@@ -496,12 +510,7 @@ def seeing_all_items(user, ward)
         end 
 
         arr = choice.split(" -- ")
-        selection = arr[0]
-
-
-        output = allItems.find do |item|
-            item.kind == selection
-        end 
+        output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
         framing(output)
 
@@ -525,12 +534,7 @@ def date_for_self(user, date, ward)
         end 
 
         arr = choice.split(" -- ")
-        selection = arr[0]
-
-
-        output = allItems.find do |item|
-            item.kind == selection
-        end 
+        output = allItems.find_by(kind: arr[0], color: arr[1], location: arr[2], size: arr[3], date: arr[4])
 
         framing(output)
 
